@@ -1,0 +1,17 @@
+#%RAML 1.0
+title: Update API
+baseUri: http://localhost:4020
+mediaType: application/json
+
+/update:
+    description: Update Files Microservices
+    /share/{id}:
+            put:
+                description: Share file with users
+                body: string[]
+    /date/{id}/{epoch}:
+            put:
+                description: Update file's expiring date
+    /name/{id}/{name}:
+            put:
+                description: Update file's name

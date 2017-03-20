@@ -1,5 +1,5 @@
 class BlinkboxFilesController < ApplicationController
-  before_action :set_blinkbox_file, only: [:show, :update, :destroy, :update_name]
+  before_action :set_blinkbox_file, only: [:show, :update, :destroy, :update_name, :update_expiring_date]
 
   # GET /blinkbox_files
   def index
@@ -30,6 +30,24 @@ class BlinkboxFilesController < ApplicationController
       render json: @blinkbox_file
     else
       render json: @blinkbox_file.errors, status: :unprocessable_entity
+    end
+  end
+
+  def update_expiring_date
+    uploaded_date = @blinkbox_file.uploaded_date
+    new_exp_date = params[:date].to_f
+    limit = uploaded_date + 7.days.to_i
+    current_date = Time.now.to_i
+
+    if current_date <= new_exp_date && new_exp_date <= limit
+      @blinkbox_file.expiring_date = new_exp_date
+      if @blinkbox_file.save
+        render json: @blinkbox_file
+      else
+        render json: @blinkbox_file.errors, status: :unprocessable_entity
+      end
+    else
+      render json: @blinkbox_file.errors, status: :not_acceptable
     end
   end
 

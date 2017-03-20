@@ -1,5 +1,5 @@
 class BlinkboxFilesController < ApplicationController
-  before_action :set_blinkbox_file, only: [:show, :update, :destroy]
+  before_action :set_blinkbox_file, only: [:show, :update, :destroy, :update_name]
 
   # GET /blinkbox_files
   def index
@@ -19,6 +19,15 @@ class BlinkboxFilesController < ApplicationController
 
     if @blinkbox_file.save
       render json: @blinkbox_file, status: :created, location: @blinkbox_file
+    else
+      render json: @blinkbox_file.errors, status: :unprocessable_entity
+    end
+  end
+
+  def update_name
+    @blinkbox_file.name = params[:name]
+    if @blinkbox_file.save
+      render json: @blinkbox_file
     else
       render json: @blinkbox_file.errors, status: :unprocessable_entity
     end

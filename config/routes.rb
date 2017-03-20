@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   scope '/update' do
+    put '/share/:id' => 'blinkbox_files#share'
+
     put '/name/:id/:name' => 'blinkbox_files#update_name'
 
     put '/date/:id/:date' => 'blinkbox_files#update_expiring_date'

@@ -1,5 +1,5 @@
 class BlinkboxFilesController < ApplicationController
-  before_action :set_blinkbox_file, only: [:show, :update, :destroy, :update_name, :update_expiring_date]
+  before_action :set_blinkbox_file, only: [:show, :update, :destroy, :share, :update_name, :update_expiring_date]
 
   # GET /blinkbox_files
   def index
@@ -19,6 +19,19 @@ class BlinkboxFilesController < ApplicationController
 
     if @blinkbox_file.save
       render json: @blinkbox_file, status: :created, location: @blinkbox_file
+    else
+      render json: @blinkbox_file.errors, status: :unprocessable_entity
+    end
+  end
+
+  def share
+    emails = params[:shared]
+    shared = @blinkbox_file.shared.to_set
+    emails.each do |email|
+      @blinkbox_file.shared << email unless shared.include?(email)
+    end
+    if @blinkbox_file.save
+      render json: @blinkbox_file
     else
       render json: @blinkbox_file.errors, status: :unprocessable_entity
     end

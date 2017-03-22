@@ -1,0 +1,21 @@
+development: &development
+  protocol: 'http'
+  host: <%= ENV['DB_ROOT_URL'] %>
+  port: <%= ENV['DB_PORT'] %>
+  prefix: blinkbox
+  suffix: files
+  username:
+  password:
+
+test:
+  <<: *development
+  suffix: test
+
+production:
+  protocol: 'https'
+  host: localhost
+  port: 5984
+  prefix: blinkbox
+  suffix: files_production
+  username: root
+  password: 123

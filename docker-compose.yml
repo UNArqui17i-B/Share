@@ -1,0 +1,18 @@
+version: '2'
+services:
+  couch_db:
+    image: klaemo/couchdb:latest
+    ports:
+      - '3010:5984'
+  update_ms:
+    build: .
+    environment:
+      DB_PORT: '5984'
+      DB_ROOT_URL: 'couch_db'
+    command: bundle exec rails s -p 4020 -b '0.0.0.0'
+    volumes:
+      - .:/update
+    ports:
+      - "4020:4020"
+    links:
+      - couch_db

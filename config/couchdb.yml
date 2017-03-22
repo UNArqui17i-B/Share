@@ -1,7 +1,7 @@
 development: &development
   protocol: 'http'
-  host: localhost
-  port: 5984
+  host: <%= ENV['DB_ROOT_URL'] %>
+  port: <%= ENV['DB_PORT'] %>
   prefix: blinkbox
   suffix: files
   username:

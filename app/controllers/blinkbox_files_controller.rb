@@ -25,16 +25,29 @@ class BlinkboxFilesController < ApplicationController
   end
 
   def share
-    emails = params[:shared]
+    emails_to_add = params[:add]
+    emails_to_remove = params[:remove]
+
     shared = @blinkbox_file.shared.to_set
-    emails.each do |email|
+
+    emails_to_remove.each do |email|
+      @blinkbox_file.shared.delete(email)
+    end
+
+    emails_to_add.each do |email|
       @blinkbox_file.shared << email unless shared.include?(email)
     end
+
     if @blinkbox_file.save
-      render json: @blinkbox_file
+      json_response = {
+        "_id": @blinkbox_file._id,
+        "_rev": @blinkbox_file._rev
+      }
+      render json: json_response
     else
       render json: @blinkbox_file.errors, status: :unprocessable_entity
     end
+
   end
 
   def update_name

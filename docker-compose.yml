@@ -8,8 +8,9 @@ services:
     build: .
     environment:
       DB_PORT: '5984'
-      DB_ROOT_URL: 'couch_db'
-    command: bundle exec rails s -p 4020 -b '0.0.0.0'
+      DB_URL: 'couch_db'
+      SECRET_KEY_BASE: '88e17a0d8bc9aaff8b23b3a64921da46059b175d73966151dd10029934cde9d4fa645c55a2a8e71e4a23778e64ce408caf7c4e5ca7c163d3785c9363f1153e4d'
+    command: bundle exec rails s -e production -p 4020 -b '0.0.0.0'
     volumes:
       - .:/update
     ports:

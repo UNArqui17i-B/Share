@@ -25,17 +25,13 @@ class BlinkboxFilesController < ApplicationController
   end
 
   def share
-    emails_to_add = params[:add]
-    emails_to_remove = params[:remove]
-
+    emails = params[:shared].to_set
     shared = @blinkbox_file.shared.to_set
 
-    emails_to_remove.each do |email|
-      @blinkbox_file.shared.delete(email)
-    end
+    @blinkbox_file.shared = []
 
-    emails_to_add.each do |email|
-      @blinkbox_file.shared << email unless shared.include?(email)
+    emails.each do |email|
+      @blinkbox_file.shared << email
     end
 
     if @blinkbox_file.save

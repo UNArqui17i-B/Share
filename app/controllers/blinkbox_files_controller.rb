@@ -27,8 +27,13 @@ class BlinkboxFilesController < ApplicationController
   def share
     emails = params[:shared].to_set
     shared = @blinkbox_file.shared.to_set
+    new_emails = []
 
     @blinkbox_file.shared = []
+
+    emails.each do |email|
+      new_emails << email unless shared.include?(email)
+    end
 
     emails.each do |email|
       @blinkbox_file.shared << email
@@ -37,7 +42,8 @@ class BlinkboxFilesController < ApplicationController
     if @blinkbox_file.save
       json_response = {
         "_id": @blinkbox_file._id,
-        "_rev": @blinkbox_file._rev
+        "_rev": @blinkbox_file._rev,
+        "lastAdded": new_emails
       }
       render json: json_response
     else
